@@ -1,0 +1,183 @@
+@font-face {
+    font-family: 'Cabinet Grotesk';
+    src: url('fonts/Cabinet-Grotesk/CabinetGrotesk-Thin.otf') format('opentype');
+    font-weight: 100;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Cabinet Grotesk';
+    src: url('fonts/Cabinet-Grotesk/CabinetGrotesk-Extralight.otf') format('opentype');
+    font-weight: 200;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Cabinet Grotesk';
+    src: url('fonts/Cabinet-Grotesk/CabinetGrotesk-Light.otf') format('opentype');
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Cabinet Grotesk';
+    src: url('fonts/Cabinet-Grotesk/CabinetGrotesk-Regular.otf') format('opentype');
+    font-weight: 400; /* normal */
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Cabinet Grotesk';
+    src: url('fonts/Cabinet-Grotesk/CabinetGrotesk-Medium.otf') format('opentype');
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Cabinet Grotesk';
+    src: url('fonts/Cabinet-Grotesk/CabinetGrotesk-Bold.otf') format('opentype');
+    font-weight: 700; /* bold */
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Cabinet Grotesk';
+    src: url('fonts/Cabinet-Grotesk/CabinetGrotesk-Extrabold.otf') format('opentype');
+    font-weight: 800;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Cabinet Grotesk';
+    src: url('fonts/Cabinet-Grotesk/CabinetGrotesk-Black.otf') format('opentype');
+    font-weight: 900;
+    font-style: normal;
+}
+
+:root {
+  --bg-color: #ffffff;
+  --text-color: #000000;
+  --border-color: #000000;
+  --border-focus-color: #333333; /* A slightly lighter black for focus in light mode */
+  --pre-bg-color: #e8e8e8;
+}
+
+body[data-theme="dark"] {
+  --bg-color: #121212; /* A common dark theme background */
+  --text-color: #ffffff;
+  --border-color: #ffffff;
+  --border-focus-color: #cccccc; /* A slightly darker white for focus in dark mode */
+  --pre-bg-color: #333333;
+}
+
+body {
+  font-family: 'Cabinet Grotesk', system-ui, sans-serif;
+  margin: 0;
+  padding: 0;
+  background: var(--bg-color);
+  color: var(--text-color);
+  transition: background 0.3s ease, color 0.3s ease;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  grid-template-columns: 1fr;
+  height: 100vh;
+  overflow: hidden;
+}
+
+main {
+  /* background: var(--bg-color); */ /* Removed to make it transparent to body bg */
+  /* padding: 2rem; */ /* Removed, body already has padding */
+  /* border-radius: 8px; */ /* Removed */
+  /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */ /* Removed */
+  /* border: 1px solid var(--border-color); */ /* Removed */
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1em;
+  padding: 0;
+}
+
+label {
+  display: block;
+  margin-top: 1rem;
+  margin-bottom: 0.25rem;
+  color: var(--text-color);
+}
+
+select,
+input[type="file"],
+button:not(.theme-toggle) { /* Exclude theme-toggle from general button styling if needed */
+  width: 100%;
+  padding: 0.5rem;
+  font-size: 1rem;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+}
+
+pre {
+  background: var(--pre-bg-color);
+  color: var(--text-color); /* Ensure pre text also follows theme */
+  padding: 1rem;
+  border-radius: 4px;
+  margin-top: 1.5rem;
+  white-space: pre-wrap;
+  border: 1px solid var(--border-color);
+}
+
+/* Theme Toggle Styles from User */
+.theme-toggle {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border-color);
+  background: transparent;
+  transition: all 0.3s ease;
+  padding: 0;
+  z-index: 1000;
+  color: var(--text-color);
+  cursor: pointer; /* Add cursor pointer */
+}
+
+/* Target the SVG icon and any elements inside the button */
+.theme-toggle svg,
+.theme-toggle * {
+  pointer-events: none !important; /* Prevent the icon from capturing mouse events */
+}
+
+/* Hover state */
+.theme-toggle:hover {
+  transform: scale(1.1);
+  border-color: var(--border-focus-color);
+}
+
+/* Focus state */
+.theme-toggle:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--border-focus-color);
+}
+
+header {
+  background-color: var(--bg-color);
+  padding: 2em;
+  text-align: center;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+footer {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  padding: 2em;
+  text-align: center;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* Add transitions to header and footer for uniform theme changes */
+header, footer {
+  transition: background 0.3s ease, color 0.3s ease;
+}

@@ -2,20 +2,217 @@
 <html>
 	<head>
 		<link rel="stylesheet" href="style.css" />
+		<title>sla credit site</title>
 	</head>
 	<body>
+		<header>
+			<div class="header-container">
+				<span class="site-title">essellay.ai</span>
+				<div class="header-links">
+					<a href="#about">about</a> |
+					<a href="#contact">contact</a>
+				</div>
+			</div>
+		</header>
 		<nav>
-			<span class="active" data-scrollspy-indicator="target1">Content 1</span>
-			<span data-scrollspy-indicator="target2">Content 2</span>
-			<span data-scrollspy-indicator="target3">Content 3</span>
-			<span data-scrollspy-indicator="target4">Content 4</span>
-			<span data-scrollspy-indicator="target5">Content 5</span>
+			<a href="#select" data-scrollspy-indicator="select"><span class="sidebar-num">1.</span><span class="sidebar-text">select</span></a>
+			<a href="#instructions" data-scrollspy-indicator="instructions"><span class="sidebar-num">2.</span><span class="sidebar-text">export</span></a>
+			<a href="#upload" data-scrollspy-indicator="upload"><span class="sidebar-num">3.</span><span class="sidebar-text">upload</span></a>
+			<a href="#email" data-scrollspy-indicator="email"><span class="sidebar-num">4.</span><span class="sidebar-text">email</span></a>
 		</nav>
-		<div data-scrollspy-target="target1">Content 1</div>
-		<div data-scrollspy-target="target2">Content 2</div>
-		<div data-scrollspy-target="target3">Content 3</div>
-		<div data-scrollspy-target="target4">Content 4</div>
-		<div data-scrollspy-target="target5">Content 5</div>
+		<section id="select" data-scrollspy-target="select">
+			<h2>select</h2>
+			<p class="subheader">select the aws products you use</p>
+			<div class="box-grid">
+				<div class="box">
+					<div class="tag"></div>
+					AWS Load Balancer
+				</div>
+				<div class="box">
+					<div class="tag"></div>
+					AWS Lambda
+				</div>
+				<div class="box">
+					<div class="tag"></div>
+					AWS Gateway
+				</div>
+				<div class="box">
+					<div class="tag"></div>
+					AWS S3
+				</div>
+				<div class="box">
+					<div class="tag"></div>
+					AWS DynamoDB
+				</div>
+				<div class="box">
+					<div class="tag"></div>
+					AWS CloudFront
+				</div>
+			</div>
+		</section>
+		<section id="instructions" data-scrollspy-target="instructions">
+			<h2>export</h2>
+			<p class="subheader">export the csv metric files from cloudwatch</p>
+		</section>
+		<section id="upload" data-scrollspy-target="upload">
+			<h2>upload</h2>
+			<p class="subheader">upload each exported csv metric file here</p>
+			<div class="box-grid" id="upload-grid"></div>
+		</section>
+		<section id="email" data-scrollspy-target="email">
+			<h2>email</h2>
+		</section>
 		<script type="text/javascript" src="scrollspy.js"></script>
-	</bod>
+		<script>
+			// toggle selected state
+			document.querySelectorAll('.box').forEach(box => {
+				box.addEventListener('click', () => {
+					box.classList.toggle('selected');
+				});
+			});
+
+			function wrapBoxLabels(root = document) {
+				root.querySelectorAll('.box').forEach(box => {
+					const hasLabel = box.querySelector('.box-label');
+					box.childNodes.forEach(node => {
+						if (!hasLabel && node.nodeType === Node.TEXT_NODE && node.textContent.trim().length) {
+							const span = document.createElement('span');
+							span.className = 'box-label';
+							span.textContent = node.textContent.trim();
+							box.replaceChild(span, node);
+						}
+					});
+				});
+			}
+
+			wrapBoxLabels();
+		</script>
+		<script>
+			/* Prevent the browser from auto-scrolling to an anchor on full refresh */
+			window.addEventListener('load', () => {
+				if (window.location.hash) {
+					history.replaceState(null, document.title, window.location.pathname + window.location.search);
+					window.scrollTo(0, 0);
+				}
+			});
+		</script>
+		<script>
+			// Upload section: clicking a box opens file picker, checkmark on upload
+			document.querySelectorAll('.upload-box').forEach(box => {
+				const input = box.querySelector('.file-input');
+				box.addEventListener('click', e => {
+					// Only trigger if not clicking the input itself
+					if (e.target !== input) input.click();
+				});
+				input.addEventListener('change', () => {
+					let check = box.querySelector('.checkmark');
+					if (!check) {
+						check = document.createElement('span');
+						check.className = 'checkmark';
+						check.textContent = '✓';
+						box.appendChild(check);
+					}
+					check.style.display = input.files.length ? 'inline-block' : 'none';
+					// Optionally, hide the tag when file is uploaded
+					const tag = box.querySelector('.tag');
+					if (tag) tag.style.display = input.files.length ? 'none' : '';
+				});
+			});
+		</script>
+		<script>
+			/* Fit font size so all labels stay on one line without wrapping */
+			function fitBoxLabels() {
+				const labels = Array.from(document.querySelectorAll('.box-label'));
+				if (!labels.length) return;
+
+				// reset to default first
+				labels.forEach(l => l.style.fontSize = '1.1em');
+
+				const minPx = 12; // minimum font size in pixels
+				let anyOverflow = () => labels.some(l => l.scrollWidth > l.offsetWidth);
+
+				// get current numeric font size in px from first label
+				let current = parseFloat(getComputedStyle(labels[0]).fontSize);
+
+				while (anyOverflow() && current > minPx) {
+					current -= 1;
+					labels.forEach(l => (l.style.fontSize = current + 'px'));
+				}
+			}
+
+			window.addEventListener('resize', fitBoxLabels);
+
+			/* ----- Dynamic upload grid ----- */
+			function attachUploadHandlers(container) {
+				container.querySelectorAll('.upload-box').forEach(box => {
+					const input = box.querySelector('.file-input');
+					box.addEventListener('click', e => {
+						if (e.target !== input) input.click();
+					});
+					input.addEventListener('change', () => {
+						let check = box.querySelector('.checkmark');
+						if (!check) {
+							check = document.createElement('span');
+							check.className = 'checkmark';
+							check.textContent = '✓';
+							box.appendChild(check);
+						}
+						const show = input.files.length > 0;
+						check.style.display = show ? 'inline-block' : 'none';
+						const tag = box.querySelector('.tag');
+						if (tag) tag.style.display = show ? 'none' : '';
+					});
+				});
+			}
+
+			function updateUploadGrid() {
+				const uploadGrid = document.getElementById('upload-grid');
+				if (!uploadGrid) return;
+				uploadGrid.innerHTML = '';
+
+				const selected = document.querySelectorAll('#select .box.selected');
+				selected.forEach(selBox => {
+					const label = (selBox.querySelector('.box-label') || selBox).textContent.trim();
+
+					const box = document.createElement('div');
+					box.className = 'box upload-box';
+					box.innerHTML = `<div class="tag"></div>${label}<input type="file" class="file-input" style="display:none">`;
+					uploadGrid.appendChild(box);
+				});
+
+				if (selected.length > 0) {
+					// add invisible placeholders so button starts row 4 (index >= 9)
+					const placeholders = Math.max(0, 9 - selected.length);
+					for (let i = 0; i < placeholders; i++) {
+						const dummy = document.createElement('div');
+						dummy.className = 'box dummy-box';
+						uploadGrid.appendChild(dummy);
+					}
+
+					const btn = document.createElement('div');
+					btn.className = 'box action-box';
+					btn.textContent = 'find my sla credits';
+					btn.addEventListener('click', () => {
+						alert('Processing SLA credits…'); // placeholder action
+					});
+					uploadGrid.appendChild(btn);
+				}
+
+				wrapBoxLabels(uploadGrid);
+				attachUploadHandlers(uploadGrid);
+				fitBoxLabels();
+			}
+
+			// Update grid initially and whenever a select box is toggled
+			updateUploadGrid();
+			document.querySelectorAll('#select .box').forEach(box => {
+				box.addEventListener('click', updateUploadGrid);
+			});
+
+			// Re-fit labels once everything is ready
+			window.addEventListener('load', () => {
+				fitBoxLabels();
+			});
+		</script>
+	</body>
 </html>

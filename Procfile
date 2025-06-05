@@ -1,1 +1,0 @@
-web: uvicorn app.sla_checker_backend:app --host 0.0.0.0 --port $PORT 

@@ -1,6 +1,0 @@
-{
-  "Amazon EC2": "CPUUtilization",
-  "Amazon S3": "BucketSizeBytes",
-  "Amazon RDS": "CPUUtilization",
-  "Amazon Lambda": "Invocations"
-}

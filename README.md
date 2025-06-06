@@ -113,4 +113,12 @@ If you later add a bundler, add scripts to `package.json`, e.g.
 Then use `npm run dev` for hot reload.
 
 ---
+## 6. Running tests
+Run the unit tests with Node's built-in test runner:
+
+```bash
+node --test
+```
+
+---
 ### Enjoy hacking! 🎉

@@ -91,8 +91,6 @@ async function handleCalculate() {
 }
 
 // expose
-window.calculateCredits = handleCalculate;
-
 function sendClaimEmail(){
   if(!rows.length){alert('Run the calculation first.');return;}
   let body='SLA Credit Request%0D%0A%0D%0A';
@@ -104,4 +102,11 @@ function sendClaimEmail(){
   window.location.href=mailto;
 }
 
-window.sendClaimEmail=sendClaimEmail; 
+if (typeof window !== 'undefined') {
+  window.calculateCredits = handleCalculate;
+  window.sendClaimEmail = sendClaimEmail;
+}
+
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = { parseCloudWatchCsv };
+}

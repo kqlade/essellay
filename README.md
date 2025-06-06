@@ -30,6 +30,8 @@ Idea was to make it very simple as an example how it works.
 
 A single-page static tool that helps users export CloudWatch metrics, upload CSVs, and calculate their AWS SLA credits — all in the browser (no backend).
 
+Enter the email address to send the claim to in the results section before clicking **file your claim**.
+
 ---
 ## 1.  Local development on Windows / Linux PC (with hot-reload)
 

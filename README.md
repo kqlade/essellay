@@ -112,4 +112,3 @@ If you later add a bundler, add scripts to `package.json`, e.g.
 Then use `npm run dev` for hot reload.
 
 ---
-### Enjoy hacking! 🎉

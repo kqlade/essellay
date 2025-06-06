@@ -182,14 +182,6 @@
 
 				// ----- Update instruction table -----
 				const instrTable = document.getElementById('instruction-table');
-				const templates = {
-					'AWS Load Balancer': `AWS Load Balancer\n1. CloudWatch ▸ Metrics ▸ AWS/ApplicationELB\n2. Tick: RequestCount (Sum), HTTPCode_ELB_5XX_Count (Sum), RequestProcessingTime (Average)\n3. Period = 1 Minute\n4. Actions ▸ Download CSV → alb.csv`,
-					'AWS Lambda': `AWS Lambda\n1. CloudWatch ▸ Metrics ▸ AWS/Lambda\n2. Tick: Invocations (Sum), Errors (Sum), Duration (Average)\n3. Period = 1 Minute\n4. Actions ▸ Download CSV → lambda.csv`,
-					'AWS Gateway': `AWS Gateway\n1. CloudWatch ▸ Metrics ▸ AWS/ApiGateway\n2. Tick: Count (Sum), 5XXError (Sum), Latency (Average)\n3. Period = 1 Minute\n4. Actions ▸ Download CSV → apigw.csv`,
-					'AWS S3': `AWS S3\n1. CloudWatch ▸ Metrics ▸ AWS/S3\n2. Tick: AllRequests (Sum), 4xxErrors (Sum), 5xxErrors (Sum)\n3. Period = 1 Minute (5 min also OK)\n4. Actions ▸ Download CSV → s3.csv`,
-					'AWS DynamoDB': `AWS DynamoDB\n1. CloudWatch ▸ Metrics ▸ AWS/DynamoDB\n2. Tick: SuccessfulRequestLatency (Average), SystemErrors (Sum)\n3. Period = 1 Minute\n4. Actions ▸ Download CSV → dynamodb.csv`,
-					'AWS CloudFront': `AWS CloudFront\n1. CloudWatch ▸ Metrics ▸ AWS/CloudFront (choose your distribution)\n2. Tick: Requests (Sum), 5xxErrorRate (Average)\n3. Period = 1 Minute\n4. Actions ▸ Download CSV → cloudfront.csv`
-				};
 
 				if (selected.length === 0) {
 					instrTable.innerHTML = '';

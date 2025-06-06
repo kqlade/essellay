@@ -37,7 +37,7 @@ A single-page static tool that helps users export CloudWatch metrics, upload CSV
 | Tool | Why |
 |------|-----|
 | **Node ≥ 18** | serves the static site with hot reload |
-| **Python ≥ 3.9** *(optional)* | only if you want to run the old back-end script `backend/sla_calc.py` |
+| **Python ≥ 3.9** *(optional)* | only if you want to run your own Python scripts |
 | **Git** | commit / push to GitHub |
 
 ### Steps
@@ -61,13 +61,12 @@ Edit any HTML / CSS / JS file → browser refreshes instantly.
 
 ---
 ## 2.  Python virtual-env (optional)
-Only needed if you experiment with `backend/` scripts:
+Only needed if you want to experiment with Python scripts (none shipped here):
 ```bash
 python -m venv .venv
 source .venv/bin/activate   # Windows 👉 .venv\Scripts\activate
 pip install -r requirements.txt
 ```
-Run: `python backend/sla_calc.py samples/*.csv`
 
 ---
 ## 3.  Git workflow

@@ -35,3 +35,7 @@ const METRIC_ROLE_MAP = {
     "5xxErrorRate": "error"
   }
 }; 
+
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = { SLA_THRESHOLDS, METRIC_ROLE_MAP };
+}

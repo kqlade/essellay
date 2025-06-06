@@ -18,7 +18,7 @@
 			<a href="#select" data-scrollspy-indicator="select"><span class="sidebar-num">1.</span><span class="sidebar-text">select</span></a>
 			<a href="#instructions" data-scrollspy-indicator="instructions"><span class="sidebar-num">2.</span><span class="sidebar-text">export</span></a>
 			<a href="#upload" data-scrollspy-indicator="upload"><span class="sidebar-num">3.</span><span class="sidebar-text">upload</span></a>
-			<a href="#email" data-scrollspy-indicator="email"><span class="sidebar-num">4.</span><span class="sidebar-text">email</span></a>
+			<a href="#email" data-scrollspy-indicator="email"><span class="sidebar-num">4.</span><span class="sidebar-text">results</span></a>
 		</nav>
 		<section id="select" data-scrollspy-target="select">
 			<h2>select</h2>
@@ -52,17 +52,24 @@
 		</section>
 		<section id="instructions" data-scrollspy-target="instructions">
 			<h2>export</h2>
-			<p class="subheader">export the csv metric files from cloudwatch</p>
+			<p class="subheader">follow the instructions below to export the csv for each service selected</p>
+			<table id="instruction-table" class="instruction-table"></table>
+			<p class="note">After selecting the metrics, choose <strong>Actions ▸ Download CSV</strong> in CloudWatch for each service.</p>
 		</section>
 		<section id="upload" data-scrollspy-target="upload">
 			<h2>upload</h2>
-			<p class="subheader">upload each exported csv metric file here</p>
+			<p class="subheader">click the service to upload each exported csv metric file</p>
 			<div class="box-grid" id="upload-grid"></div>
 		</section>
 		<section id="email" data-scrollspy-target="email">
-			<h2>email</h2>
+			<h2>results</h2>
+			<p class="subheader">see your calculated availability and applicable credit percentage</p>
+			<table id="results-table" class="instruction-table"></table>
+			<div id="claim-btn" class="box action-box" onclick="sendClaimEmail()">file your claim</div>
 		</section>
 		<script type="text/javascript" src="scrollspy.js"></script>
+		<script src="js/sla_data.js"></script>
+		<script src="js/sla_calc_browser.js"></script>
 		<script>
 			// toggle selected state
 			document.querySelectorAll('.box').forEach(box => {
@@ -171,6 +178,66 @@
 				uploadGrid.innerHTML = '';
 
 				const selected = document.querySelectorAll('#select .box.selected');
+
+				// ----- Update instruction table -----
+				const instrTable = document.getElementById('instruction-table');
+				const templates = {
+					'AWS Load Balancer': `AWS Load Balancer\n1. CloudWatch ▸ Metrics ▸ AWS/ApplicationELB\n2. Tick: RequestCount (Sum), HTTPCode_ELB_5XX_Count (Sum), RequestProcessingTime (Average)\n3. Period = 1 Minute\n4. Actions ▸ Download CSV → alb.csv`,
+					'AWS Lambda': `AWS Lambda\n1. CloudWatch ▸ Metrics ▸ AWS/Lambda\n2. Tick: Invocations (Sum), Errors (Sum), Duration (Average)\n3. Period = 1 Minute\n4. Actions ▸ Download CSV → lambda.csv`,
+					'AWS Gateway': `AWS Gateway\n1. CloudWatch ▸ Metrics ▸ AWS/ApiGateway\n2. Tick: Count (Sum), 5XXError (Sum), Latency (Average)\n3. Period = 1 Minute\n4. Actions ▸ Download CSV → apigw.csv`,
+					'AWS S3': `AWS S3\n1. CloudWatch ▸ Metrics ▸ AWS/S3\n2. Tick: AllRequests (Sum), 4xxErrors (Sum), 5xxErrors (Sum)\n3. Period = 1 Minute (5 min also OK)\n4. Actions ▸ Download CSV → s3.csv`,
+					'AWS DynamoDB': `AWS DynamoDB\n1. CloudWatch ▸ Metrics ▸ AWS/DynamoDB\n2. Tick: SuccessfulRequestLatency (Average), SystemErrors (Sum)\n3. Period = 1 Minute\n4. Actions ▸ Download CSV → dynamodb.csv`,
+					'AWS CloudFront': `AWS CloudFront\n1. CloudWatch ▸ Metrics ▸ AWS/CloudFront (choose your distribution)\n2. Tick: Requests (Sum), 5xxErrorRate (Average)\n3. Period = 1 Minute\n4. Actions ▸ Download CSV → cloudfront.csv`
+				};
+
+				if (selected.length === 0) {
+					instrTable.innerHTML = '';
+				} else {
+					let html = '<tr><th>service</th><th>steps</th><th>select</th><th>period</th></tr>';
+
+					const data = {
+						'AWS Load Balancer': {
+							steps: 'CloudWatch ▸ Metrics ▸ AWS/ApplicationELB',
+							tick: 'RequestCount (Sum), HTTPCode_ELB_5XX_Count (Sum), RequestProcessingTime (Average)',
+							period: '1 Minute'
+						},
+						'AWS Lambda': {
+							steps: 'CloudWatch ▸ Metrics ▸ AWS/Lambda',
+							tick: 'Invocations (Sum), Errors (Sum), Duration (Average)',
+							period: '1 Minute'
+						},
+						'AWS Gateway': {
+							steps: 'CloudWatch ▸ Metrics ▸ AWS/ApiGateway',
+							tick: 'Count (Sum), 5XXError (Sum), Latency (Average)',
+							period: '1 Minute'
+						},
+						'AWS S3': {
+							steps: 'CloudWatch ▸ Metrics ▸ AWS/S3',
+							tick: 'AllRequests (Sum), 4xxErrors (Sum), 5xxErrors (Sum)',
+							period: '1 Minute'
+						},
+						'AWS DynamoDB': {
+							steps: 'CloudWatch ▸ Metrics ▸ AWS/DynamoDB',
+							tick: 'SuccessfulRequestLatency (Average), SystemErrors (Sum)',
+							period: '1 Minute'
+						},
+						'AWS CloudFront': {
+							steps: 'CloudWatch ▸ Metrics ▸ AWS/CloudFront',
+							tick: 'Requests (Sum), 5xxErrorRate (Average)',
+							period: '1 Minute'
+						}
+					};
+
+					Array.from(selected).forEach(b => {
+						const key = (b.querySelector('.box-label')||b).textContent.trim();
+						const d = data[key];
+						if (d) {
+							html += `<tr><td>${key}</td><td>${d.steps}</td><td>${d.tick}</td><td>${d.period}</td></tr>`;
+						}
+					});
+					instrTable.innerHTML = html;
+				}
+
 				selected.forEach(selBox => {
 					const label = (selBox.querySelector('.box-label') || selBox).textContent.trim();
 
@@ -193,7 +260,7 @@
 					btn.className = 'box action-box';
 					btn.textContent = 'find my sla credits';
 					btn.addEventListener('click', () => {
-						alert('Processing SLA credits…'); // placeholder action
+						calculateCredits();
 					});
 					uploadGrid.appendChild(btn);
 				}

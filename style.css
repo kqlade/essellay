@@ -319,3 +319,59 @@ body>div {
 #upload-grid .dummy-box {
 	visibility: hidden;
 }
+
+.instruction-table {
+    width:100%;
+    margin-top:1em;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size:0.9em;
+    border:1px solid #ddd;
+    border-radius:0.5em;
+    overflow:hidden;
+}
+
+.instruction-table th, .instruction-table td{
+    padding:0.5em;
+    border:1px solid #eee;
+}
+
+.instruction-table th{
+    font-weight:600;
+    background:#f8f8f8;
+    text-align:left;
+}
+
+.instruction-table td{
+    vertical-align:top;
+    word-break:break-word;
+}
+
+.note{
+    font-size:0.8em;
+    color:#555;
+    margin-top:0.5em;
+}
+
+.primary-btn{
+    display:inline-block;
+    margin-top:1em;
+    background:#222;
+    color:#fff;
+    padding:1em 1.2em;
+    border:none;
+    border-radius:0.5em;
+    font-family:inherit;
+    font-size:1em;
+    cursor:pointer;
+    width:230px;
+    text-align:center;
+}
+.primary-btn:hover{
+    background:#444;
+}
+
+#claim-btn.box{
+    width:230px;
+    margin-top:1em;
+}

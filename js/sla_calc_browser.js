@@ -95,7 +95,10 @@ async function handleCalculate() {
 window.calculateCredits = handleCalculate;
 
 function sendClaimEmail(){
-  if(!rows.length){alert('Run the calculation first.');return;}
+  if(!rows || !rows.length){
+    alert('Run the calculation first.');
+    return;
+  }
   let body='SLA Credit Request%0D%0A%0D%0A';
   rows.forEach(r=>{
     body+=`${r.service}: ${r.availability}% availability → ${r.credit}% credit%0D%0A`;

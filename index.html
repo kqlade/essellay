@@ -64,9 +64,10 @@
 		<section id="email" data-scrollspy-target="email">
 			<h2>results</h2>
 			<p class="subheader">see your calculated availability and applicable credit percentage</p>
-			<table id="results-table" class="instruction-table"></table>
-			<div id="claim-btn" class="box action-box" onclick="sendClaimEmail()">file your claim</div>
-		</section>
+                        <table id="results-table" class="instruction-table"></table>
+                        <input id="claim-email" type="email" class="primary-input" placeholder="you@example.com">
+                        <div id="claim-btn" class="box action-box" onclick="sendClaimEmail()">file your claim</div>
+                </section>
 		<script type="text/javascript" src="scrollspy.js"></script>
 		<script src="js/sla_data.js"></script>
 		<script src="js/sla_calc_browser.js"></script>

@@ -97,12 +97,18 @@ function sendClaimEmail(){
     alert('Run the calculation first.');
     return;
   }
+  const emailInput = document.getElementById('claim-email');
+  const to = emailInput?.value.trim();
+  if(!to){
+    alert('Enter a destination email address.');
+    return;
+  }
   let body='SLA Credit Request%0D%0A%0D%0A';
   rows.forEach(r=>{
     body+=`${r.service}: ${r.availability}% availability → ${r.credit}% credit%0D%0A`;
   });
   body+='%0D%0APlease assist with filing an SLA credit request for the services above.';
-  const mailto=`mailto:YOUR_EMAIL@example.com?subject=SLA%20Credit%20Request&body=${body}`;
+  const mailto=`mailto:${encodeURIComponent(to)}?subject=SLA%20Credit%20Request&body=${body}`;
   window.location.href=mailto;
 }
 

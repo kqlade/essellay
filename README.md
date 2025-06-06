@@ -7,6 +7,8 @@ amounts—no backend required.
 **Disclaimer**: These calculations are approximations and may differ from
 official AWS SLA metrics.
 
+Enter the email address to send the claim to in the results section before clicking **file your claim**.
+
 ---
 ## 1.  Local development on Windows / Linux PC (with hot-reload)
 

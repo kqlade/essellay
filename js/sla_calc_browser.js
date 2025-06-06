@@ -1,4 +1,5 @@
 // Simple CSV SLA calculator running fully in-browser
+let rows = [];
 function inferServiceKey(label) {
   const l = label.toLowerCase();
   if (l.includes('load balancer')) return 'alb_nlb';
@@ -92,7 +93,10 @@ async function handleCalculate() {
 
 // expose
 function sendClaimEmail(){
-  if(!rows.length){alert('Run the calculation first.');return;}
+  if(!rows || !rows.length){
+    alert('Run the calculation first.');
+    return;
+  }
   let body='SLA Credit Request%0D%0A%0D%0A';
   rows.forEach(r=>{
     body+=`${r.service}: ${r.availability}% availability → ${r.credit}% credit%0D%0A`;

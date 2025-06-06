@@ -1,4 +1,5 @@
 // Simple CSV SLA calculator running fully in-browser
+let rows = [];
 function inferServiceKey(label) {
   const l = label.toLowerCase();
   if (l.includes('load balancer')) return 'alb_nlb';

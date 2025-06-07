@@ -1,22 +1,27 @@
-import nodemailer from 'nodemailer';
+import sgMail from '@sendgrid/mail';
 
-export const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST,
-  port: Number(process.env.SMTP_PORT) || 587,
-  auth: {
-    user: process.env.SMTP_USER,
-    pass: process.env.SMTP_PASS
-  }
-});
+const SENDGRID_KEY = process.env.SENDGRID_API_KEY;
+if(!SENDGRID_KEY){
+  throw new Error('SENDGRID_API_KEY env var required');
+}
+sgMail.setApiKey(SENDGRID_KEY);
+
+const FROM_EMAIL = process.env.FROM_EMAIL;
 
 export async function sendClaimEmail({ to, text, zipBuffer }) {
-  await transporter.sendMail({
-    from: process.env.FROM_EMAIL,
+  const msg = {
     to,
+    from: FROM_EMAIL,
     subject: 'SLA Credit Request Package',
     text,
     attachments: [
-      { filename: 'claim.zip', content: zipBuffer }
+      {
+        content: zipBuffer.toString('base64'),
+        filename: 'claim.zip',
+        type: 'application/zip',
+        disposition: 'attachment'
+      }
     ]
-  });
+  };
+  await sgMail.send(msg);
 } 

@@ -29,16 +29,20 @@ app.post('/api/send-claim', upload.array('files'), async (req, res) => {
     let body;
     if(openai){
       const prompt=`Draft a concise AWS Support Center request asking for SLA service credits. Use the data below.\n\n${JSON.stringify(summaryObj,null,2)}`;
+      console.log('LLM PROMPT:', prompt);
       const chat=await openai.chat.completions.create({
         model: MODEL,
         messages:[{role:'user',content:prompt}],
         max_completion_tokens:300
       });
       body=chat.choices[0].message.content.trim();
-    } else {
+      console.log('LLM RESPONSE:', body);
+    }
+    if(!body){ // fallback if LLM returned empty or undefined
       body = 'SLA Credit Request\n\n';
       summaryObj.forEach(r => {
-        body += `${r.service}: ${r.availability}% availability → ${r.creditPercent}% credit\n`;
+        const creditVal = r.creditPercent ?? r.credit ?? 0;
+        body += `${r.service}: ${r.availability}% availability → ${creditVal}% credit\n`;
       });
       body += '\nPlease assist with filing an SLA credit request for the services above.';
     }

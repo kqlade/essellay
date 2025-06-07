@@ -55,7 +55,7 @@ app.post('/api/send-claim', upload.array('files'), async (req, res) => {
     await sendClaimEmail({ to: email, text: body, zipBuffer });
     res.json({ ok: true });
   } catch (err) {
-    console.error(err);
+    console.error('SENDGRID ERROR:', err.response?.body || err);
     res.status(500).json({ error: 'internal-error' });
   }
 });

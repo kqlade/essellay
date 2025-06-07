@@ -89,33 +89,53 @@ async function handleCalculate() {
     html += `<tr><td>${r.service}</td><td>${r.availability}</td><td>${r.credit}</td></tr>`;
   }
   table.innerHTML = html;
+  // enable claim button if email filled
+  toggleClaimBtn();
 }
 
 // expose
+function toggleClaimBtn(){
+  const btn=document.getElementById('claim-btn');
+  const email=document.getElementById('claim-email').value.trim();
+  if(rows.length && email){btn.classList.remove('disabled-btn');}
+  else{btn.classList.add('disabled-btn');}
+}
+
+// validate on email input
+document.getElementById('claim-email').addEventListener('input',toggleClaimBtn);
+
 function sendClaimEmail(){
-  if(!rows || !rows.length){
-    alert('Run the calculation first.');
-    return;
-  }
-  const emailInput = document.getElementById('claim-email');
-  const to = emailInput?.value.trim();
-  if(!to){
-    alert('Enter a destination email address.');
-    return;
-  }
+  const email=document.getElementById('claim-email').value.trim();
+  if(!rows.length){alert('Run the calculation first.');return;}
+  if(!email){alert('Please enter your email.');return;}
   let body='SLA Credit Request%0D%0A%0D%0A';
   rows.forEach(r=>{
     body+=`${r.service}: ${r.availability}% availability → ${r.credit}% credit%0D%0A`;
   });
   body+='%0D%0APlease assist with filing an SLA credit request for the services above.';
-  const mailto=`mailto:${encodeURIComponent(to)}?subject=SLA%20Credit%20Request&body=${body}`;
+  const mailto=`mailto:${email}?subject=SLA%20Credit%20Request&body=${body}`;
   window.location.href=mailto;
 }
 
-if (typeof window !== 'undefined') {
-  window.calculateCredits = handleCalculate;
-  window.sendClaimEmail = sendClaimEmail;
+window.sendClaimEmail=sendClaimEmail;
+
+async function sendClaimEmailBackend(){
+  const email=document.getElementById('claim-email').value.trim();
+  if(!rows.length||!email){alert('Run calculation and enter email first');return;}
+  const form=new FormData();
+  form.append('email',email);
+  form.append('summary',JSON.stringify(rows));
+  // attach files
+  document.querySelectorAll('#upload-grid .upload-box').forEach(box=>{
+    const input=box.querySelector('.file-input');
+    if(input && input.files.length){form.append('files',input.files[0]);}
+  });
+  const res=await fetch('/api/send-claim',{method:'POST',body:form});
+  if(res.ok){alert('Claim package sent — check your inbox');}
+  else{alert('Failed to send claim');}
 }
+
+window.sendClaimEmailBackend=sendClaimEmailBackend;
 
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = {

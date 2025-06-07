@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>About – essellay.ai</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" type="image/svg+xml" href="dory_logo_base.svg" />
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <a href="index.html" class="site-title">essellay.ai</a>
+            <div class="header-links">
+                <a href="about.html">about</a> |
+                <a href="#contact">contact</a>
+            </div>
+        </div>
+    </header>
+    <main class="page-content" style="padding:2rem 1rem;max-width:800px;margin:0 auto;">
+        <h2>About essellay</h2>
+        <p><strong>We turn AWS Service-Level Agreements into real dollars—automatically.</strong><br>
+        AWS promises up to 100&nbsp;% service credits when their uptime slips, yet most teams leave that money unclaimed because the process is fiddly and time-boxed. essellay.ai (pronounced "S-L-A") removes the friction:</p>
+
+        <ol>
+            <li><strong>Choose your AWS services.</strong> We guide you to the exact CloudWatch Metrics you need—no guesswork.</li>
+            <li><strong>Drag-and-drop the CSVs.</strong> Our LLM-powered engine measures availability, error rates, and latency against the official SLA thresholds.</li>
+            <li><strong>Copy your ready-made claim.</strong> We generate the Support Center request with timestamps, percentages, and your account ID. Paste, attach the CSV, hit Submit—done.</li>
+        </ol>
+
+        <h3>Why we built it</h3>
+        <p>Every AWS SLA says the same thing:</p>
+        <blockquote>"Open a Support case within two billing cycles … include timestamps and logs."</blockquote>
+        <p>Collecting that evidence by hand is tedious. We automate the math so you can focus on shipping, not sifting through spreadsheets.</p>
+
+        <h3>Your data never leaves the box</h3>
+        <table class="instruction-table" style="margin-top:0.5em">
+            <tr><th>Principle</th><th>What it means for you</th></tr>
+            <tr><td>No AWS keys</td><td>We never ask for IAM roles, access keys, or tokens.</td></tr>
+            <tr><td>Ephemeral uploads</td><td>CSVs are parsed in-memory and immediately discarded.</td></tr>
+            <tr><td>Open formulas</td><td>Our availability math is published—auditors can reproduce the result in Excel.</td></tr>
+        </table>
+
+        <h3>Roadmap</h3>
+        <ul>
+            <li>Service coverage: add more AWS services beyond the initial six.</li>
+            <li>Health-event feed: auto-detect outages for services without customer metrics.</li>
+            <li>Hands-free claims: optional IAM role to file credits via the Support API.</li>
+        </ul>
+
+        <h3>The team</h3>
+        <p>Have feedback or a feature request? email <a href="mailto:hello@essellay.ai">hello@essellay.ai</a>—we read every note.</p>
+    </main>
+</body>
+</html> 

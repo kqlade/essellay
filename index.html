@@ -2,14 +2,15 @@
 <html>
 	<head>
 		<link rel="stylesheet" href="style.css" />
-		<title>sla credit site</title>
+		<link rel="icon" type="image/svg+xml" href="dory_logo_base.svg" />
+		<title>essellay.ai</title>
 	</head>
 	<body>
 		<header>
 			<div class="header-container">
-				<span class="site-title">essellay.ai</span>
+				<a href="index.html" class="site-title">essellay.ai</a>
 				<div class="header-links">
-					<a href="#about">about</a> |
+					<a href="about.html">about</a> |
 					<a href="#contact">contact</a>
 				</div>
 			</div>
@@ -65,8 +66,8 @@
 			<h2>results</h2>
 			<p class="subheader">see your calculated availability and applicable credit percentage</p>
                         <table id="results-table" class="instruction-table"></table>
-                        <input id="claim-email" type="email" class="primary-input" placeholder="you@example.com">
-                        <div id="claim-btn" class="box action-box" onclick="sendClaimEmail()">file your claim</div>
+                        <input id="claim-email" type="email" class="primary-input" placeholder="you@example.com" required>
+                        <div id="claim-btn" class="box action-box disabled-btn" onclick="sendClaimEmailBackend()">file your claim</div>
                 </section>
 		<script type="text/javascript" src="scrollspy.js"></script>
 		<script src="js/sla_data.js"></script>

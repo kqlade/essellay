@@ -372,17 +372,20 @@ body>div {
 }
 
 .primary-input{
+    width:230px;
+    padding:0.6em;
     margin-top:1em;
-    padding:0.6em 1em;
     border:1px solid #ccc;
     border-radius:0.5em;
     font-family:inherit;
-    font-size:1em;
-    width:230px;
-    box-sizing:border-box;
 }
 
 #claim-btn.box{
     width:230px;
     margin-top:1em;
+}
+
+.disabled-btn{
+    opacity:0.4;
+    pointer-events:none;
 }

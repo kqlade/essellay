@@ -1,3 +1,5 @@
-[static]
-build = ""
-publish = "." 
+[build]
+command = "npm install"
+
+[deploy]
+startCommand = "node api/server.js" 

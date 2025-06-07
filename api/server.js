@@ -32,7 +32,7 @@ app.post('/api/send-claim', upload.array('files'), async (req, res) => {
       const chat=await openai.chat.completions.create({
         model: MODEL,
         messages:[{role:'user',content:prompt}],
-        max_tokens:300
+        max_completion_tokens:300
       });
       body=chat.choices[0].message.content.trim();
     } else {

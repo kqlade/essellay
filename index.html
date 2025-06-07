@@ -67,7 +67,7 @@
 			<p class="subheader">see your calculated availability and applicable credit percentage</p>
                         <table id="results-table" class="instruction-table"></table>
                         <input id="claim-email" type="email" class="primary-input" placeholder="you@example.com" required>
-                        <div id="claim-btn" class="box action-box disabled-btn" onclick="sendClaimEmailBackend()">file your claim</div>
+                        <div id="claim-btn" class="box action-box disabled-btn" onclick="sendClaimEmailBackend()">file my claim</div>
                 </section>
 		<script type="text/javascript" src="scrollspy.js"></script>
 		<script src="js/sla_data.js"></script>
@@ -254,7 +254,7 @@
 					btn.className = 'box action-box';
 					btn.textContent = 'find my sla credits';
 					btn.addEventListener('click', () => {
-						calculateCredits();
+						handleCalculate();
 					});
 					uploadGrid.appendChild(btn);
 				}
